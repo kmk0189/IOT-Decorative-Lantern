@@ -32,11 +32,13 @@
 *.app
 
 # Directories
+bin/
 obj/
 .vs/
 .vscode/
 build/
 external/
+CMakeFiles/
 
 # Utility files
 GPATH
