@@ -19,10 +19,19 @@
 #pragma once
 
 #include "color.hpp"
-#include "kklp01.hpp"
+#include "effects/effect.hpp"
+
+enum class Direction
+: uint8_t
+{
+    none,
+    incoming,
+    outgoing
+};
 
 struct Control_Packet
 {
+    Direction data_direction;    
     Effect_Group group;
     Effect_Type type;
     Color color;
