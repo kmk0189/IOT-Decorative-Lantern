@@ -42,27 +42,27 @@ Color::Color(uint32_t color_hex)
     blue_val       = (uint8_t)(color_hex & 255);
 }
 
-uint8_t Color::get_brightness()
+uint8_t Color::get_brightness() const
 {
     return brightness_val;
 }
 
-uint8_t Color::get_red()
+uint8_t Color::get_red() const
 {
     return red_val;
 }
 
-uint8_t Color::get_green()
+uint8_t Color::get_green() const
 {
     return green_val;
 }
 
-uint8_t Color::get_blue()
+uint8_t Color::get_blue() const
 {
     return blue_val;
 }
 
-uint32_t Color::get_hex()
+uint32_t Color::get_hex() const
 {
     return (brightness_val << 24) | (red_val << 16) | (green_val << 8) | blue_val;
 }

@@ -27,12 +27,12 @@ public:
     Color(uint8_t red, uint8_t green, uint8_t blue, uint8_t brightness = 255);
     explicit Color(uint32_t hex);
 
-    uint8_t  get_brightness();
-    uint8_t  get_red();
-    uint8_t  get_green();
-    uint8_t  get_blue();
+    uint8_t  get_brightness() const;
+    uint8_t  get_red() const;
+    uint8_t  get_green() const;
+    uint8_t  get_blue() const;
     
-    uint32_t get_hex();
+    uint32_t get_hex() const;
 
     bool operator==(const Color&);
 
