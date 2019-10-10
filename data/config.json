@@ -1,0 +1,17 @@
+{
+    "debug_level": "info",
+    "light_board" : {
+        "default":
+        {
+            "color": 0,
+            "mode" : 0
+        },
+        "spi_speed": 7800000
+    },
+    "mqtt" : {
+        "server_address" : "Core-Server",
+        "client_id"      : "${computer_name}",
+        "topic_url"      : "/device/lantern_A",
+        "QOS"            : 2
+    }
+}
