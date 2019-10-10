@@ -17,6 +17,7 @@
 */
 
 #include "kklp01.hpp"
+#include <boost/log/trivial.hpp>
 
 Kklp01::Kklp01() 
 {
@@ -32,16 +33,28 @@ Kklp01::~Kklp01()
     }
 }
 
-void Kklp01::set_effect(Color color, Effect_Group group /*= Effect_Group::all*/, Effect_Type type /*= Effect_Type::single*/)
+void Kklp01::clear_effect()
+{
+    Color blank_color(0, 0, 0, 0);
+    change_effect(blank_color, Effect_Group::even, Effect_Type::solid);
+    change_effect(blank_color, Effect_Group::odd, Effect_Type::solid);
+}
+
+void Kklp01::set_effect(Control_Packet &pack)
+{
+    set_effect(pack.color, pack.group, pack.type);
+}
+
+void Kklp01::set_effect(Color color, Effect_Group group, Effect_Type type)
 {
     if (group == Effect_Group::all)
     {
-        set_effect(color, Effect_Group::even, type);
-        set_effect(color, Effect_Group::odd, type);
+        change_effect(color, Effect_Group::even, type);
+        change_effect(color, Effect_Group::odd, type);
     }
     else
     {
-        set_effect(color, group, type);
+        change_effect(color, group, type);
     }
 }
 
@@ -51,16 +64,22 @@ void Kklp01::change_effect(Color color, Effect_Group group, Effect_Type type)
     if (active_effects[(uint8_t)group] != nullptr && active_effects[(uint8_t)group]->get_type() == type)
     {
         active_effects[(uint8_t)group]->set_color(color);
+
+        BOOST_LOG_TRIVIAL(info) << "Changed effect color to '" << std::hex << color.get_hex() << "'.";
     }
     else if (active_effects[(uint8_t)group] != nullptr && active_effects[(uint8_t)group]->get_type() != type)
     {
         delete active_effects[(uint8_t)group];
 
         active_effects[(uint8_t)group] = create_effect(color, group, type);
+
+        BOOST_LOG_TRIVIAL(info) << "Created a new effect of type '" << (uint8_t)type << "'.";
     }
     else
     {
         active_effects[(uint8_t)group] = create_effect(color, group, type);
+
+        BOOST_LOG_TRIVIAL(info) << "Created a new effect of type '" << (uint8_t)type << "'.";
     }
 }
 
@@ -125,7 +144,7 @@ std::array<apa102c, max_chips> Kklp01::get_chips()
 
 std::vector<uint8_t> Kklp01::pack_message()
 {
-    std::vector<unsigned char> message(msg_size_bytes) ;
+    std::vector<uint8_t> message(msg_size_bytes) ;
     unsigned char idx = 0;
 
     message[idx++] = (header_val >> 24) & 255;
@@ -146,6 +165,8 @@ std::vector<uint8_t> Kklp01::pack_message()
     message[idx++] = (footer_val >> 16) & 255;
     message[idx++] = (footer_val >> 8) & 255;
     message[idx] = footer_val & 255;
+
+    BOOST_LOG_TRIVIAL(info) << "Packed serial message to send through spi, message size: " << message.size() << " bytes.";
 
     return message;
 }

@@ -24,7 +24,8 @@
 #include <vector>
 
 #include "apa102c.hpp"
-#include "effect.hpp"
+#include "effects.hpp"
+#include "control_packet.hpp"
 
 using namespace std::chrono;
 
@@ -54,7 +55,12 @@ public:
     std::vector<uint8_t> pack_message();
 
     // A
-    void set_effect(Color color, Effect_Group group = Effect_Group::all, Effect_Type type = Effect_Type::solid);
+    void set_effect(Control_Packet &pack);
+    void set_effect(Color color, Effect_Group group, Effect_Type type);
+
+    void turn_on();
+    void turn_off();
+    void clear_effect();
 
 private:
     std::array<Effect*, 2> active_effects;

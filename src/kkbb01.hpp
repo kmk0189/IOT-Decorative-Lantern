@@ -20,11 +20,18 @@
 
 #include <vector>
 
+struct Board_Options
+{
+    uint32_t spi_speed;
+};
+
 class Kkbb01
 {
 public:
-    explicit Kkbb01(uint32_t tx_speed);
-    void write_message(std::vector<uint8_t> message);
+    explicit Kkbb01(const Board_Options &opt);
+    void write_message(const std::vector<uint8_t> &message);
+    void turn_on();
+    void turn_off();
 
 private:
     int fd;

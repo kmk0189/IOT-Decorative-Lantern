@@ -27,23 +27,23 @@
 enum class Effect_Group
 : uint8_t
 {
-    all,
-    even,
-    odd
+    even = 0,
+    odd  = 1,
+    all  = 2
 };
 
 //  Indicates which effect to use on the light devices, it is paired with LED_Group.
 enum class Effect_Type
 : uint8_t
 {
-    none,
-    blink,
-    bounce,
-    lightning,
-    rainbow,
-    raceway,
-    solid,
-    stars
+    none      = 0,
+    blink     = 1,
+    bounce    = 2,
+    lightning = 3,
+    rainbow   = 4,
+    raceway   = 5,
+    solid     = 6,
+    stars     = 7
 };
 
 //  Base class for any derived effect the device uses.

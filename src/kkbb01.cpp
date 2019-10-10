@@ -20,6 +20,7 @@
 #include <unistd.h>
 #include <wiringPi.h>
 #include <wiringPiSPI.h>
+#include <boost/log/trivial.hpp>
 
 #include "kkbb01.hpp"
 
@@ -30,7 +31,7 @@ constexpr uint32_t spi_max_spd = 32000000;
 constexpr uint8_t sig_enable_pin = 6;
 constexpr uint8_t pwr_enable_pin = 10;
 
-Kkbb01::Kkbb01(uint32_t tx_speed)
+Kkbb01::Kkbb01(const Board_Options &opt)
 {
     wiringPiSetup();
 
@@ -39,6 +40,7 @@ Kkbb01::Kkbb01(uint32_t tx_speed)
 
     digitalWrite(pwr_enable_pin, HIGH);
 
+    uint32_t tx_speed = opt.spi_speed;
     if (tx_speed < spi_min_spd)
     {
         tx_speed = spi_min_spd;
@@ -51,7 +53,7 @@ Kkbb01::Kkbb01(uint32_t tx_speed)
     fd = wiringPiSPISetup(spi0, tx_speed);
 }
 
-void Kkbb01::write_message(std::vector<uint8_t> message)
+void Kkbb01::write_message(const std::vector<uint8_t> &message)
 {
     // This board has the ability to turn off the line driver chip, so
     // we have to turn it on before we transmit.
@@ -70,10 +72,20 @@ void Kkbb01::write_message(std::vector<uint8_t> message)
 
     if (result < 0)
     {
-        std::cerr << "Unable to send message." << std::endl;
+        BOOST_LOG_TRIVIAL(warning) << "Unable to send message.";
     }
     else if (result < (ssize_t)message.size())
     {
-        std::cerr << "Unable to send full message, only " << message.size() - result << " bytes were sent." << std::endl;
+        BOOST_LOG_TRIVIAL(warning) << "Unable to send full message, only " << message.size() - result << " bytes were sent.";
     }
+}
+
+void Kkbb01::turn_on()
+{
+    digitalWrite(pwr_enable_pin, HIGH);
+}
+
+void Kkbb01::turn_off()
+{
+    digitalWrite(pwr_enable_pin, LOW);
 }
