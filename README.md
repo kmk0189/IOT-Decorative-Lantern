@@ -17,10 +17,11 @@ The device is designed to allow for a single effect for the entire led puck or h
 | Solid       | A solid color at a specified brightness. |
 | Stars       | A random LED fades in and out at a random interval. |
 
-*Note: Each effect may be all or half the leds (even or odd). *
+*Note: Each effect may be all or half the leds (even or odd).*
 
 Communication
 -----------
 The code uses a MQTT client to talk with the server, the overview of the system is below.
 
-[[https://github.com/kmk0189/IOT-Decorative-Lantern-Code/blob/develop/docs/Overview.png|alt=overview]]
+**System Overview**
+![System Overview](https://github.com/kmk0189/IOT-Decorative-Lantern-Code/blob/develop/docs/Overview.png)
